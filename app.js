@@ -10,6 +10,8 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const fs = require('fs');
+const pdfParse = require('pdf-parse');  // Import pdf-parse
 const Pdf = require('./models/Pdf'); // Import the PDF model
 
 const app = express();
@@ -47,29 +49,64 @@ const upload = multer({ storage });
 
 
 // POST route to upload PDF with metadata
+// app.post('/upload', upload.single('pdf'), async (req, res) => {
+//     const { title, description, numberOfPages } = req.body;
+//     const file = req.file;
+
+//     if (!file) {
+//         return res.status(400).json({ error: 'PDF file is required' });
+//     }
+
+//     const pdfLink = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+
+//     // Create and save the PDF metadata in MongoDB 
+//     const pdfData = new Pdf({
+//         title,
+//         description,
+//         numberOfPages,
+//         pdfLink
+//     });
+
+//     try {
+//         const savedPdf = await pdfData.save();
+//         res.status(201).json(savedPdf);
+//     } catch (err) {
+//         res.status(500).json({ error: 'Failed to save PDF metadata' });
+//     }
+// });
+
+// POST route to upload PDF with automatic page count extraction
 app.post('/upload', upload.single('pdf'), async (req, res) => {
-    const { title, description, numberOfPages } = req.body;
+    const { title, description } = req.body;
     const file = req.file;
 
     if (!file) {
         return res.status(400).json({ error: 'PDF file is required' });
     }
 
+    const pdfPath = `uploads/${file.filename}`;
     const pdfLink = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
 
-    // Create and save the PDF metadata in MongoDB 
-    const pdfData = new Pdf({
-        title,
-        description,
-        numberOfPages,
-        pdfLink
-    });
-
+    // Extract number of pages from the uploaded PDF
     try {
+        const pdfBuffer = fs.readFileSync(pdfPath);  // Read the PDF file
+        const data = await pdfParse(pdfBuffer);  // Parse the PDF to extract metadata
+
+        const numberOfPages = data.numpages;  // Get the number of pages
+
+        // Create and save the PDF metadata in MongoDB
+        const pdfData = new Pdf({
+            title,
+            description,
+            numberOfPages,
+            pdfLink
+        });
+
         const savedPdf = await pdfData.save();
         res.status(201).json(savedPdf);
+
     } catch (err) {
-        res.status(500).json({ error: 'Failed to save PDF metadata' });
+        res.status(500).json({ error: 'Failed to process PDF' });
     }
 });
 
