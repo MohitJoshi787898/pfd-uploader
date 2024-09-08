@@ -16,7 +16,7 @@ const Pdf = require('./models/Pdf'); // Import the PDF model
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: '*'
 }));
 
 //Connection to the database
