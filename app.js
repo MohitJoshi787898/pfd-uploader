@@ -52,7 +52,7 @@ app.post('/upload', upload.single('pdf'), async (req, res) => {
 
     const pdfLink = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
 
-    // Create and save the PDF metadata in MongoDB
+    // Create and save the PDF metadata in MongoDB 
     const pdfData = new Pdf({
         title,
         description,
@@ -74,11 +74,11 @@ app.get('/pdfs', async (req, res) => {
         const pdfs = await Pdf.find();
         res.json(pdfs);
     } catch (err) {
-        res.status(500).json({ error: 'Failed to retrieve PDFs' });
+        res.status(500).json({ error: 'Failed to retrieve PDFs ' });
     }
 });
 
-// Serve uploaded PDFs
+// Serve uploaded PDF's
 app.use('/uploads', express.static('uploads'));
 
 
