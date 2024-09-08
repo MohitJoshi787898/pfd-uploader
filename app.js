@@ -24,7 +24,10 @@ connectDB();
 //Middleware
 app.use(bodyParser.json());
 
-
+// Simple root route
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
 
 
 
@@ -40,6 +43,8 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage });
+
+
 
 // POST route to upload PDF with metadata
 app.post('/upload', upload.single('pdf'), async (req, res) => {
