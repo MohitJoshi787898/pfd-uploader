@@ -85,7 +85,7 @@ app.post('/upload', upload.single('pdf'), async (req, res) => {
     }
 
     const pdfPath = `uploads/${file.filename}`;
-    const pdfLink = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+    const pdfLink = `${req.protocol}s://${req.get('host')}/uploads/${file.filename}`;
 
     // Extract number of pages from the uploaded PDF
     try {
