@@ -1,7 +1,9 @@
 // const express=require('express');
-const connectDB=require('./config/db');
-const bodyParser=require("body-parser");
-const authRoute=require("./routes/authRoutes");
+const connectDB = require('./config/db');
+const bodyParser = require("body-parser");
+const authRoute = require("./routes/authRoutes");
+const personRoute = require("./routes/personRoutes")
+const ticketRoute = require("./routes/ticketRoutes")
 
 const express = require('express');
 const cors = require('cors')
@@ -13,10 +15,11 @@ const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');  // Import pdf-parse
 const Pdf = require('./models/Pdf'); // Import the PDF model
-
+const authMiddleware = require('./middleware/authMiddleware');
+const cancellationRoutes = require('./routes/cancellationRoutes');
 const app = express();
 app.use(cors({
-  origin: '*'
+    origin: '*'
 }));
 
 //Connection to the database
@@ -26,10 +29,26 @@ connectDB();
 //Middleware
 app.use(bodyParser.json());
 
+// Middleware Functions to log 
+const logger = (req, res, next) => {
+    ``
+    console.log(`Method: ${req.method} ${req.url}  Date ${new Date().toLocaleDateString()} Body:${JSON.stringify(req.body)}  frfre`);
+    next();
+}
+app.use(logger);
+
+
 // Simple root route
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
+//Routes
+app.use("/auth", authRoute);
+
+app.use("/person", personRoute);
+app.use("/ticket", ticketRoute);
+app.use('/cancellation', cancellationRoutes);
+
 
 
 
@@ -59,7 +78,7 @@ const upload = multer({ storage });
 
 //     const pdfLink = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
 
-//     // Create and save the PDF metadata in MongoDB 
+//     // Create and save the PDF metadata in MongoDB
 //     const pdfData = new Pdf({
 //         title,
 //         description,
@@ -126,10 +145,12 @@ app.use('/uploads', express.static('uploads'));
 
 
 
-//Routes 
-app.use("/auth",authRoute);
+
 
 // Start Server
 
-const PORT=8000;
-app.listen(PORT,()=>console.log(`Server running on port ${PORT}`));
+const PORT = 8000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
