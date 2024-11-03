@@ -52,8 +52,8 @@ const CancellationSchema = new mongoose.Schema({
         required: true,
     },
     reasonForCancellation: {
-        type: String,
-        enum: ['Incorrect pricing occurs when a product is displayed', 'Fraudulent activity', 'Purchased The Wrong Item/Changed Their Mind', 'Find a better low price in another platform', "Cancel this transaction, Do not need it, Wrongly Placed this order"],
+        type: [String],
+        enum: ['Incorrect pricing occurs when a product is displayed', 'Fraudulent activity', 'Purchased The Wrong Item/Changed Their Mind', 'Find a better low price in another platform', "Cancel this transaction, Do not need it, Wrongly Placed this order", "Other"],
         required: true,
     },
     transactionAmountToCancel: {
