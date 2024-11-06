@@ -17,6 +17,8 @@ const pdfParse = require('pdf-parse');  // Import pdf-parse
 const Pdf = require('./models/Pdf'); // Import the PDF model
 const authMiddleware = require('./middleware/authMiddleware');
 const cancellationRoutes = require('./routes/cancellationRoutes');
+const contactUsRoutes = require('./routes/contactUsRoute');
+const getLinkRoutes = require('./routes/getLinksRoute');
 const app = express();
 app.use(cors({
     origin: '*'
@@ -48,6 +50,8 @@ app.use("/auth", authRoute);
 app.use("/person", personRoute);
 app.use("/ticket", ticketRoute);
 app.use('/cancellation', cancellationRoutes);
+app.use('/contact-us', contactUsRoutes);
+app.use("/getAllLinks", getLinkRoutes)
 
 
 
