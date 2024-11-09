@@ -18,7 +18,6 @@ const Pdf = require('./models/Pdf'); // Import the PDF model
 const authMiddleware = require('./middleware/authMiddleware');
 const cancellationRoutes = require('./routes/cancellationRoutes');
 const contactUsRoutes = require('./routes/contactUsRoute');
-const windowIosRoutes = require('./routes/windowsIosRoutes');
 const getLinkRoutes = require('./routes/getLinksRoute');
 const app = express();
 app.use(cors({
@@ -52,7 +51,6 @@ app.use("/person", personRoute);
 app.use("/ticket", ticketRoute);
 app.use('/cancellation', cancellationRoutes);
 app.use('/contact-us', contactUsRoutes);
-app.use('/windowIos', windowIosRoutes);
 app.use("/getAllLinks", getLinkRoutes)
 
 
