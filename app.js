@@ -21,6 +21,8 @@ const cancellationRoutes = require('./routes/cancellationRoutes');
 const contactUsRoutes = require('./routes/contactUsRoute');
 const windowIosRoutes = require('./routes/windowsIosRoutes');
 const getLinkRoutes = require('./routes/getLinksRoute');
+const getAllApiData = require("./routes/getAllApiRoute")
+
 // =======
 // >>>>>>> parent of 38f1b1c (add contact us and get linkes api)
 const app = express();
@@ -57,7 +59,8 @@ app.use('/cancellation', cancellationRoutes);
 
 app.use('/contact-us', contactUsRoutes);
 app.use('/windowIos', windowIosRoutes);
-app.use("/getAllLinks", getLinkRoutes)
+app.use("/getAllLinks", getLinkRoutes);
+app.use("/getAllApiData", getAllApiData);
 
 
 
